@@ -1,0 +1,23 @@
+# Caddyfile
+
+# Ganti 'your-domain.com' dengan domain Anda saat deployment
+# Jika hanya untuk development lokal, gunakan :80
+:80 {
+    # Halaman error jika ada masalah
+    handle_errors {
+        respond "{http.error.status_code} {http.error.status_text}"
+    }
+
+    # Penanganan Static Files
+    # Pastikan lokasi /app/staticfiles/ sesuai dengan STATIC_ROOT di Django
+    handle /static/* {
+        root * /app/staticfiles
+        file_server
+    }
+
+    # Reverse Proxy untuk traffic utama (Selain /static/)
+    # Meneruskan traffic ke service 'app' (Gunicorn) di port 8000
+    handle {
+        reverse_proxy app:8000
+    }
+}

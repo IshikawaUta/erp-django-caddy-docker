@@ -1,0 +1,62 @@
+{% extends "hrd/base.html" %}
+
+{% block title %}Daftar Karyawan{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-6">👤 Daftar Karyawan Perusahaan</h2>
+        <div>
+            <a href="{% url 'init_dept' %}" class="btn btn-secondary btn-sm">Init Departemen</a>
+            <a href="{% url 'tambah_karyawan' %}" class="btn btn-primary">Tambah Karyawan Baru</a>
+        </div>
+    </div>
+
+    {% if karyawan_list %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover border">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nama</th>
+                    <th>Posisi</th>
+                    <th>Departemen</th>
+                    <th>Tgl Bergabung</th>
+                    <th>Status</th>
+                    <th>Gaji Pokok</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for karyawan in karyawan_list %}
+                <tr>
+                    <td>{{ karyawan.nama_lengkap }}</td>
+                    <td><span class="badge bg-info text-dark">{{ karyawan.posisi }}</span></td>
+                    <td>{{ karyawan.departemen.nama }}</td>
+                    <td>{{ karyawan.tanggal_bergabung|date:"d M Y" }}</td>
+                    <td>
+                        {% if karyawan.status == 'Aktif' %}
+                            <span class="badge bg-success">{{ karyawan.status }}</span>
+                        {% elif karyawan.status == 'Cuti' %}
+                            <span class="badge bg-warning text-dark">{{ karyawan.status }}</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ karyawan.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>Rp {{ karyawan.gaji_pokok|floatformat:0 }}</td>
+                    <td>
+                        <a href="{% url 'edit_karyawan' karyawan.id %}" class="btn btn-sm btn-outline-info me-2">Edit</a>
+                        <form method="post" action="{% url 'hapus_karyawan' karyawan.id %}" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus karyawan {{ karyawan.nama_lengkap }}?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        Belum ada data karyawan. Silakan <a href="{% url 'tambah_karyawan' %}" class="alert-link">Tambah Karyawan Baru</a>.
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "hrd/base.html" %}
+
+{% block title %}Tambah Karyawan{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">➕ Tambah Karyawan Baru</h2>
+    
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        Kesalahan: {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="nama_lengkap" class="form-label">Nama Lengkap:</label>
+            <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="posisi" class="form-label">Posisi:</label>
+            <input type="text" class="form-control" id="posisi" name="posisi" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="tanggal_bergabung" class="form-label">Tanggal Bergabung:</label>
+            <input type="date" class="form-control" id="tanggal_bergabung" name="tanggal_bergabung" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="departemen" class="form-label">Departemen:</label>
+            <select class="form-select" id="departemen" name="departemen" required>
+                {% for dept in departemen_list %}
+                <option value="{{ dept.id }}">{{ dept.nama }} ({{ dept.lokasi }})</option>
+                {% empty %}
+                <option disabled>Mohon inisialisasi departemen terlebih dahulu!</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="status" class="form-label">Status:</label>
+            <select class="form-select" id="status" name="status">
+                {% for key, display in status_choices %}
+                <option value="{{ key }}">{{ display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="gaji_pokok" class="form-label">Gaji Pokok (Rp):</label>
+            <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" step="any" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Simpan Karyawan</button>
+        <a href="{% url 'daftar_karyawan' %}" class="btn btn-secondary">Batal</a>
+    </form>
+{% endblock %}

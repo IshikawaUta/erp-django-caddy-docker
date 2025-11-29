@@ -1,0 +1,61 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # --------------------
+  # 1. MongoDB Atlas (Database)
+  # --------------------
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      # Anda harus memasukkan kredensial database untuk setup awal
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo_data:/data/db # Untuk menyimpan data secara persisten
+      - ./staticfiles:/app/staticfiles:ro
+    networks:
+      - app-network
+
+  # --------------------
+  # 2. Django App (Gunicorn)
+  # --------------------
+  app:
+    build: . # Menggunakan Dockerfile di direktori saat ini
+    restart: always
+    env_file:
+      - .env # Menggunakan .env untuk MONGO_URI dan Django secrets
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # --------------------
+  # 3. Caddy Web Server (Reverse Proxy)
+  # --------------------
+  caddy:
+    image: caddy:2.7.5-alpine # Menggunakan Caddy image
+    restart: always
+    ports:
+      - "80:80"    # HTTP
+      - "443:443"  # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile # Menggunakan Caddyfile kustom
+      - caddy_data:/data # Untuk menyimpan sertifikat SSL dan cache Caddy
+      - ./staticfiles:/app/staticfiles:ro # Mengakses static files dari kontainer app
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+# --------------------
+# Jaringan dan Volume
+# --------------------
+volumes:
+  mongo_data:
+  caddy_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,31 @@
+{% extends "hrd/base.html" %}
+
+{% block title %}Tambah Departemen{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">➕ Tambah Departemen Baru</h2>
+    
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama Departemen:</label>
+            <input type="text" class="form-control" id="nama" name="nama" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lokasi" class="form-label">Lokasi/Lantai:</label>
+            <input type="text" class="form-control" id="lokasi" name="lokasi">
+            <div class="form-text">Contoh: Lantai 3, Gedung A.</div>
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Simpan Departemen</button>
+        <a href="{% url 'daftar_karyawan' %}" class="btn btn-secondary">Batal</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,9 @@
+asgiref==3.11.0
+Django==5.2.8
+dnspython==2.8.0
+gunicorn==23.0.0
+mongoengine==0.29.1
+packaging==25.0
+pymongo==4.15.4
+python-dotenv==1.2.1
+sqlparse==0.5.4
