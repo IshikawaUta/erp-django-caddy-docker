@@ -18,7 +18,7 @@ Sistem manajemen perusahaan berbasis web ini dikembangkan menggunakan **Django**
 Struktur inti proyek ini mengikuti konvensi Django, dengan tambahan *file* konfigurasi Docker dan *environment variables*.
 
 ```
-django-mongo-perusahaan/
+erp-django-caddy-docker/
 ├── PerusahaanKu/          # Direktori Pengaturan Proyek Django
 │   ├── settings.py
 │   └── urls.py
@@ -59,7 +59,7 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di lingkungan lokal Anda (tan
 ```bash
 # 1. Clone repositori
 git clone https://github.com/IshikawaUta/erp-django-caddy-docker.git
-cd django-mongo-perusahaan
+cd erp-django-caddy-docker
 
 # 2. Buat dan aktifkan virtual environment
 python -m venv venv
