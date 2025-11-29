@@ -58,7 +58,7 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di lingkungan lokal Anda (tan
 
 ```bash
 # 1. Clone repositori
-git clone <URL_REPOSITORI>
+git clone https://github.com/IshikawaUta/erp-django-caddy-docker.git
 cd django-mongo-perusahaan
 
 # 2. Buat dan aktifkan virtual environment
